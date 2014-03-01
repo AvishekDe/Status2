@@ -1,41 +1,31 @@
-var fs = require('fs');
+var fs = require('fs'),
+    ini = require('./parser'),
+    request = require("request"),
+    file = fs.openSync('status.csv', 'w'),
+    statusCodes = require("./status.json");
 
-fs.writeFile('status.txt', 'CURRENT STATUS OF SDS WEB APPS', function (err) {
-  if (err) throw err;
-});
-fs.appendFile('status.txt', '\n-----------------------------------------\n' , function (err){
-	if(err) throw err;
-});
+//write csv headers
+fs.writeSync(file, "name, status, msg\n");
 
-var parser = require('./parser.js');
-var n=parser.value;
-var arr=parser.expArr;
-var url = "" , name = "";
-var request = require('request');
-var i;
+for(var i in ini){
+    var config = ini[i];
+    console.log(config.name);
+    if(config.url){
+        requester(config.url, file, config.name);
+    }
+    else{
 
-for(i=0;i<n;i++)
-{
-	if(arr[i][1]) // For Apps with URL
-	{
-		url = arr[i][2];
-		name = arr[i][0];
-		request('http://'+url, function (error, response, body) {
-		  if (!error && response.statusCode == 200) {
-			    fs.appendFile('status.txt' , (i+1)+'.\t'+name+'\t 200 OK \n' , function (err){
-			    	if (err) throw err;
-			    });
-		  }
-		   else
-		   {
-		   		fs.appendFile('status.txt' , (i+1)+'.\t'+name+'\t 404 NOT FOUND \n' , function (err){
-		    	if (err) throw err;
-		    	});
-		   }
-		});
-	}
-	else // For DC++
-	{
+    }
+}
 
-	}
+function requester(url, file, name){
+    console.log(name+"  -  "+url);
+    request(url, function(err, res, body){
+        if(err)
+            fs.writeSync(file, name+","+"ERR"+","+err+"\n");
+        else
+        {
+            fs.writeSync(file, name+","+statusCodes[res.statusCode]+", "+res.statusCode+"\n");
+        }
+    });
 }
