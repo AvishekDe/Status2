@@ -19,7 +19,6 @@ for(var i in ini){
 }
 
 function requester(url, file, name){
-    console.log(name+"  -  "+url);
     request(url, function(err, res, body){
         if(err)
             fs.writeSync(file, name+","+"ERR"+","+err+"\n");
