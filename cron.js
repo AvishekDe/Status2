@@ -1,30 +1,33 @@
 var fs = require('fs'),
     ini = require('./parser'),
     request = require("request"),
-    file = fs.openSync('status.csv', 'w'),
-    statusCodes = require("./status.json");
+    statusCodes = require("./status.json"),
+    _ = require('lodash');
 
-//write csv headers
-fs.writeSync(file, "name, status, msg\n");
-
+var output={};
+var count = Object.keys(ini).length;//Number of sections in our INI file
+//This will make our anonymous function call after cb has been called count times
+var cb = _.after(count, function(){
+    fs.writeFile('output.json', JSON.stringify(output));
+});
 for(var i in ini){
     var config = ini[i];
     console.log(config.name);
     if(config.url){
-        requester(config.url, file, config.name);
+        requester(config.url, config.name, cb);
     }
     else{
-
+        //try connecting to the host,port and call cb once its done
+        cb();
     }
 }
 
-function requester(url, file, name){
+function requester(url, name, cb){
     request(url, function(err, res, body){
         if(err)
-            fs.writeSync(file, name+","+"ERR"+","+err+"\n");
+            output[name]=["ERR", err];
         else
-        {
-            fs.writeSync(file, name+","+statusCodes[res.statusCode]+", "+res.statusCode+"\n");
-        }
+            output[name]=[statusCodes[res.statusCode], res.statusCode];
+        cb();
     });
 }

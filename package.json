@@ -8,8 +8,9 @@
   },
   "dependencies": {
     "express": "3.4.8",
-    "jade": "1.2.*",,
+    "jade": "1.2.*",
     "iniparser":"1.0.*",
-    "request":"2.34.*"
+    "request":"2.34.*",
+    "lodash":"2.4.*"
   }
 }
