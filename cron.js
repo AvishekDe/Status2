@@ -22,7 +22,7 @@ for(var i in ini)
     else
     {
         //try connecting to the host,port and call cb once its done
-        var client = net.connect({port: 411 , host:'dc.sdslabs.co.in'}, function(err , res , body) 
+       /* var client = net.connect({port: 411 , host:'dc.sdslabs.co.in'}, function(err , res , body) 
         {
             //'connect' listener
             if(err)
@@ -37,7 +37,10 @@ for(var i in ini)
                     });
                 }
              cb();
-        });
+        });*/
+        console.log("Coming here");
+        requesterhp(config.host , config.port , cb);
+        console.log("Coming here too");
         
     }
 }
@@ -48,6 +51,24 @@ function requester(url, name, cb){
             output[name]=["ERR", err];
         else
             output[name]=[statusCodes[res.statusCode], res.statusCode];
+        cb();
+    });
+}
+
+function requesterhp(hphost, hpport, cb)
+{
+    console.log(config.name + "" + hpport + "" + hphost);
+    var client = net.connect({port: hpport , host: hphost}, function(err, res , body){
+        if(err)
+            output[config.name] = ["ERR" , err];
+        else
+        {
+            client.on('data' , function(data)
+            {
+                output[config.name] = ['OK' , 200];
+                client.end();
+            });
+        }
         cb();
     });
 }
