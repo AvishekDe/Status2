@@ -14,34 +14,12 @@ var cb = _.after(count, function(){
 for(var i in ini)
 {
     var config = ini[i];
-    console.log(config.name);
-    if(config.url)
-    {
+    if(config.url){
         requester(config.url, config.name, cb);
     }
-    else
-    {
+    else{
         //try connecting to the host,port and call cb once its done
-       /* var client = net.connect({port: 411 , host:'dc.sdslabs.co.in'}, function(err , res , body) 
-        {
-            //'connect' listener
-            if(err)
-                output[config.name] = ["ERR",err];
-            else{
-                    client.on('data', function(data) 
-                    {
-                        
-                        //console.log(config.name); Config.name referring to Blogs here for some reason
-                        output["Direct Connect ++"]=['OK', 200]; 
-                      client.end();
-                    });
-                }
-             cb();
-        });*/
-        console.log("Coming here");
-        requesterhp(config.host , config.port , cb);
-        console.log("Coming here too");
-        
+        requestConnect(config.host, config.port, config.name, cb);
     }
 }
 
@@ -55,20 +33,13 @@ function requester(url, name, cb){
     });
 }
 
-function requesterhp(hphost, hpport, cb)
-{
-    console.log(config.name + "" + hpport + "" + hphost);
-    var client = net.connect({port: hpport , host: hphost}, function(err, res , body){
+function requestConnect(host, port, name, cb){
+    var client = net.connect({port: port, host:host}, function(err){
         if(err)
-            output[config.name] = ["ERR" , err];
+            output[name] = ["ERR",err];
         else
-        {
-            client.on('data' , function(data)
-            {
-                output[config.name] = ['OK' , 200];
-                client.end();
-            });
-        }
+            output[name]=['OK', 0];
         cb();
+        client.end();
     });
 }
