@@ -1,4 +1,4 @@
-status.txt
-status.csv
-config.ini
-output.json
+/status.txt
+/status.csv
+/config.ini
+/public/output.json
