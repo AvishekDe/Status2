@@ -1,4 +1,4 @@
-/* * Module dependencies */ var express = require('express') , stylus = require('stylus') , nib = require('nib')
+/* * Module dependencies */ var express = require('express');
 
 
 var express = require('express');
