@@ -9,7 +9,7 @@ var output={};
 var count = Object.keys(ini).length;//Number of sections in our INI file
 //This will make our anonymous function call after cb has been called count times
 var cb = _.after(count, function(){
-    fs.writeFile('output.json', JSON.stringify(output));
+    fs.writeFile('public/output.json', JSON.stringify(output));
 });
 for(var i in ini)
 {
