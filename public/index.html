@@ -5,6 +5,8 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="styles.css">
 		<script src="jquery-1.11.0.min.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 		<base target="_blank"></base>
 		
 	</head>
@@ -15,21 +17,37 @@
 		</div>
 
 		<div id="resultDiv">
+			
 		</div>
 
 		<script>
 			var html;
+			var alloktest = 0;
+			var flag = 0;
+			var count = 1;
 			resultDiv.innerHTML = "";
 			$.get("output.json" , function(data){
 				for(var i in data)
 				{
-					 html = i;
-					 if(data[i][0] == "OK")
-					 	html += " Working Fine ";
-					 else
+					 html = '<div class="stat" id="s'+count+'">';
+					 html += i;
+					 if(data[i][0] == "OK"){
+					 	html += '<span class="op" style="float:right">';
+					 	flag = 1;
+					 	html += " Operational ";
+					 	html += '</span' ;}
+					 else{
+					 	html += '<span class="nop" style="float:right">';
+					 	alloktest = 1;
 					 	html += " Currently Down "+data[i][0];
-					 html+="<br>";
+					 	html += '</span>';}
+					 
+					 html+="</div>";
 					 $("#resultDiv").append(html);
+					 if(flag==1){document.getElementById("s"+count).style.backgroundColor = "#1ABC9C" ;}
+					 else{document.getElementById("s"+count).style.backgroundColor = "#f75353";}
+					 count++;
+					 flag=0;
 				}
 				html="";
 			} , "json");

@@ -10,7 +10,7 @@ body
 	left: 1%;
 	width: 98%;
 	height: 84px;
-	font-family:  cursive;
+	font-family: "audiowide" , cursive;
 	font-size: 54px;
 	padding-left: 25px;
 	padding-top: 15px;
@@ -23,8 +23,38 @@ body
 	position: relative;
 	left: 1%;
 	width: 98%;
+	height:1376px;
 	top: 5px;
 	padding : 10px;
 	color: white;
-	font-size: 30px;	
+	font-size: 30px;
+	font-family: "Ubuntu" , sans-serif; 
+}
+
+.stat
+{
+	width: 90%;
+	height: 20px;
+	border: 1px solid black;
+	position: relative;
+	padding:2.5%;
+	left:2.5%;
+	top:14px;
+	border-radius: 4px;
+}
+
+.op
+{
+	border: 2px solid honeydew;
+	border-radius: 5px;
+	background-color: white;
+	color: #1ABC9C;
+}
+
+.nop
+{
+	border: 2px solid honeydew;
+	border-radius: 5px;
+	background-color: white;
+	color: #f75353;
 }
