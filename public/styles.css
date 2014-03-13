@@ -58,3 +58,63 @@ body
 	background-color: white;
 	color: #f75353;
 }
+
+#header
+{
+	width:90%;
+	height:84px;
+	position: relative;
+	top:5px;
+	left:2.5%;
+	padding: 2.5%;
+	font-family: "audiowide" , cursive;
+	font-size: 54px;
+	color: #4C4C4C;
+	font-weight: 500;
+}
+
+#mainarea
+{
+	width:90%;
+	position: relative;
+	top:5px;
+	left: 2.5%;
+	
+}
+
+#fine
+{
+	width: 90%;
+	position: relative;
+	top: 150px;
+	left: 2.5%;
+	text-align: center;
+	font-family: "audiowide" , cursive;
+	font-size: 50px;
+	color: #1ABC9C;
+}
+
+#showmore
+{
+	width: 90%;
+	position: relative;
+	top: 175px;
+	left: 2.5%;
+	text-align: center;
+	font-family: "Segoe-UI" , sans-serif;
+	font-size: 20px;
+	color: #1ABC9C;
+}
+
+#bsm
+{
+	background-color: white;
+	border: 5px solid #1ABC9C;
+	border-radius: 12px;
+	width: 137px;
+	height: 37px;
+	font-family: "audiowide" , cursive;
+	font-size: 15px;
+	color: #1ABC9C;
+	display: none;
+}
