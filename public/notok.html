@@ -33,31 +33,31 @@
 			var flag = 0;
 			var count = 1;
 			resultDiv.innerHTML = "";
-				$.get("output.json" , function(data){
-				for(var i in data)
-				{
-					 html = '<div class="stat" id="s'+count+'">';
-					 html += i;
-					 if(data[i][0] == "OK"){
-					 	html += '<span class="op" style="float:right">';
-					 	flag = 1;
-					 	html += " Operational ";
-					 	html += '</span' ;}
-					 else{
-					 	html += '<span class="nop" style="float:right">';
-					 	test = false;
-					 	html += " Currently Down "+data[i][0];
-					 	html += '</span>';}
-					 
-					 html+="</div>";
-					 $("#resultDiv").append(html);
-					 if(flag==1){document.getElementById("s"+count).style.backgroundColor = "#1ABC9C" ;}
-					 else{document.getElementById("s"+count).style.backgroundColor = "#f75353";}
-					 count++;
-					 flag=0;
-				}
-				html="";
-				if(test) Redirect();
+			$.get("output.json" , function(data){
+					for(var i in data)
+					{
+						 html = '<div class="stat" id="s'+count+'">';
+						 html += i;
+						 if(data[i][0] == "OK"){
+						 	html += '<span class="op" style="float:right">';
+						 	flag = 1;
+						 	html += " Operational ";
+						 	html += '</span' ;}
+						 else{
+						 	html += '<span class="nop" style="float:right">';
+						 	test = false;
+						 	html += " Currently Down "+data[i][0];
+						 	html += '</span>';}
+						 
+						 html+="</div>";
+						 $("#resultDiv").append(html);
+						 if(flag==1){document.getElementById("s"+count).style.backgroundColor = "#1ABC9C" ;}
+						 else{document.getElementById("s"+count).style.backgroundColor = "#f75353";}
+						 count++;
+						 flag=0;
+					}
+					html="";
+					if(test) Redirect();
 				} , "json");
 		</script>
 		<br><br><br>
