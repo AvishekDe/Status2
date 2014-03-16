@@ -66,10 +66,10 @@ body
 	position: relative;
 	top:5px;
 	left:2.5%;
-	padding: 2.5%;
-	font-family: "audiowide" , cursive;
-	font-size: 54px;
-	color: #4C4C4C;
+	font-family: "Segoe UI" , sans-serif;
+	font-size: 30px;
+	vertical-align: top;
+	color: #1ABC9C;
 	font-weight: 500;
 }
 
@@ -86,35 +86,41 @@ body
 {
 	width: 90%;
 	position: relative;
-	top: 150px;
-	left: 2.5%;
+	top: 240px;
+	left: 8.5%;
 	text-align: center;
-	font-family: "audiowide" , cursive;
-	font-size: 50px;
-	color: #1ABC9C;
+	font-family: "Segoe UI" , sans-serif;
+	font-size: 32px;
+	color: black;
 }
 
 #showmore
 {
 	width: 90%;
 	position: relative;
-	top: 175px;
-	left: 2.5%;
+	top: 255px;
+	left: 8.5%;
 	text-align: center;
-	font-family: "Segoe-UI" , sans-serif;
+	font-family: "Segoe UI" , sans-serif;
 	font-size: 20px;
-	color: #1ABC9C;
+	color: #1B36EB;
 }
 
 #bsm
 {
 	background-color: white;
-	border: 5px solid #1ABC9C;
+	border: 2px solid #1B36EB;
 	border-radius: 12px;
 	width: 137px;
 	height: 37px;
-	font-family: "audiowide" , cursive;
+	font-family: "Segoe UI" , sans-serif;
 	font-size: 15px;
-	color: #1ABC9C;
+	color: #1B36EB;
 	display: none;
+}
+
+#statuslogo
+{
+	position: relative;
+	left: 400px;
 }
