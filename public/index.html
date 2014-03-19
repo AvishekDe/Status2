@@ -10,13 +10,9 @@
  				$('.showmore').fadeIn().css('display','inline-block');
 			});
 			$.getJSON('/output.json', function(data){
-				var total = Object.keys(data).length,count=0;
 				for(var i in data){
-					if(data[i][0]=='OK')
-						count++
-				}
-				if(count<total){
-					document.location.href="status.html";
+					if(data[i].err)
+						document.location.href="status.html";
 				}
 			})
 		</script>

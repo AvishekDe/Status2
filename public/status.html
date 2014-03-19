@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 	<head>
-		<title> Status2 : SDSLabs Application Status </title>
+		<title> Status2: SDSLabs Application Status </title>
 		<meta name="Author" content="Team SDSLabs">
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="styles.css">
 		<script src="jquery-1.11.0.min.js"></script>
-		<script src="handebars-1.3.0.min.js"></script>
+		<script src="handlebars-1.3.0.min.js"></script>
 	</head>
 	<body>
 		<script id="stathtml" type="text/x-handlebars-template">
-			<tr class="item" id="r{{count}}">
-				<td>{{i}}
-			{{#if_eq statcode "OK"}}
-				<span class="op" style="float:right">
-				<img src="img/tick.jpg" height="30px" width="30px">
-				</span></td></tr>
-			{{else}}
-				<span class="nop" style="float:right">
-			 	<img src="img/cross.jpg" height="30px" width="30px">
-			 	</span>
-			 	<div class="errormsg" id="errormsg{{count}}">{{statcode}}</div></td></tr>
-			{{/if_eq}}
+			{{#each data}}
+				<tr class="item">
+					<td>{{this.name}}</td>
+				{{#if this.err}}
+					<td>
+				 		<img src="img/cross.jpg" title="{{this.err}}">
+				 	</td>
+				{{else}}
+					<td>
+						<img src="img/tick.jpg" title="{{this.msg}}">
+					</td>
+				{{/if}}
+				</tr>
+			{{/each}}
 		</script>
 
 		<div id="titlebar"></div>
@@ -29,58 +31,15 @@
 		</table>
 
 		<script>
-			var html;
-			var test = true;
-			var flag = 0;
-			var count = 1;
 			$.get("output.json" , function(data){
-					for(var i in data)
-					{
-						 
-						 if(data[i][0] != "OK"){
-						 	test=false;break;}
-					}
-
-					for(var i in data)
-					{
-							Handlebars.registerHelper('if_eq', function(a, b, opts) {
-							    if(a == b)
-							        return opts.fn(this);
-							    else
-							        return opts.inverse(this);
-							});
-							var template = $('#stathtml').text();
-							var fn = Handlebars.compile(template);
-							var html=fn({count:count , i:i , statcode:data[i][0]});
-							$('#stattable').append(html);
-							
-						 	
-						 count++;
-						 flag=0;
-					}
-					$("tr").hover(function(){
-						$(this).css("cursor" , "pointer");
-					});
-
-					$("tr").click(function(e){
-								if((!$(e.target).find("div").hasClass('shown'))&&($(e.target).find("div").hasClass('errormsg'))){
-									$(e.target).find('.errormsg').fadeIn();
-									$(e.target).find('.errormsg').toggleClass('shown');
-									$(e.target).css("background-color" , "#FBE1E4");
-									$(e.target).css("border" , "1px solid red");
-									$(e.target).css("border-radius" , "5px");
-								}
-
-								else{
-										$(e.target).find('.errormsg').fadeOut();
-										$(e.target).find('.errormsg').toggleClass('shown');
-										$(e.target).css("background-color" , "white");
-										$(e.target).css("border" , "0px");
-									}
-							});
-					html="";
-					if(test) Redirect();
-				} , "json");
+				var template = $('#stathtml').text();
+				var fn = Handlebars.compile(template);
+				var html=fn({data:data});
+				$('#stattable').html(html);
+				$("tr").click(function(e){
+					$(e.target).parent().find('.errormsg').toggle();
+				});
+			});
 		</script>
 	</body>
 </html>
