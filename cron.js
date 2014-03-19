@@ -5,7 +5,7 @@ var fs = require('fs'),
     statusCodes = require("./status.json"),
     _ = require('lodash');
 
-var output={};
+var output=[];
 var count = Object.keys(ini).length;//Number of sections in our INI file
 //This will make our anonymous function call after cb has been called count times
 var cb = _.after(count, function(){
@@ -26,9 +26,20 @@ for(var i in ini)
 function requester(url, name, cb){
     request(url, function(err, res, body){
         if(err)
-            output[name]=["ERR", err];
+            output.push({
+                name:name,
+                err:err
+            });
         else
-            output[name]=[statusCodes[res.statusCode], res.statusCode];
+            var status={
+                name: name,
+                code: res.statusCode
+            }
+            key='msg';
+            if(res.statusCode!=200)
+                key='err';
+            status[key] = statusCodes[res.statusCode];
+            output.push(status);
         cb();
     });
 }
@@ -36,9 +47,15 @@ function requester(url, name, cb){
 function requestConnect(host, port, name, cb){
     var client = net.connect({port: port, host:host}, function(err){
         if(err)
-            output[name] = ["ERR",err];
+            output.push({
+                name: name,
+                err: err
+            })
         else
-            output[name]=['OK', 0];
+            output.push({
+                name: name,
+                code: 0
+            })
         cb();
         client.end();
     });
