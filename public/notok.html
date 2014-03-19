@@ -5,26 +5,49 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="styles.css">
 		<script src="jquery-1.11.0.min.js"></script>
+		<script src="handlebars-v1.3.0.js"></script>
 		<script type="text/javascript">
 			<!--
 			function Redirect() {
 			    window.location="ok.html";
 			}
 			//-->
+
+			function ShowError(x){
+				$("#r"+x).css("background-color" , "#FBE1E4");
+				$("#errormsg"+x).css("display" ," block");
+			}
 		</script>
-		<link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+		
 		<base target="_blank"></base>
 		
 	</head>
 
 	<body>
+
+	<script id="stathtml" type="text/x-handlebars-template">
+		<tr class="item" id="r{{count}}">
+		<td> {{i}}
+		{{#if_eq statcode "OK"}}
+			<span class="op" style="float:right">
+			<img src="img/tick.jpg" height="30px" width="30px">
+			</span></td></tr>
+
+		{{else}}
+			<span class="nop" style="float:right">
+		 	<img src="img/cross.jpg" height="30px" width="30px">
+		 	</span>
+		 	<div class="errormsg" id="errormsg{{count}}">{{statcode}}</div></td></tr>
+		{{/if_eq}}
+	</script>
+
 		<div id="titlebar">
-			SDSLabs StatusBoard
+			<img src="img/statuslogo.jpg" height="117px" width="399px" id="statuslogo">
 		</div>
 
 		<div id="resultDiv">
-			
+			<table id="stattable" width="492px">
+			</table>
 		</div>
 
 		<script>
@@ -32,34 +55,47 @@
 			var test = true;
 			var flag = 0;
 			var count = 1;
-			resultDiv.innerHTML = "";
 			$.get("output.json" , function(data){
 					for(var i in data)
 					{
-						 html = '<div class="stat" id="s'+count+'">';
-						 html += i;
-						 if(data[i][0] == "OK"){
-						 	html += '<span class="op" style="float:right">';
-						 	flag = 1;
-						 	html += " Operational ";
-						 	html += '</span' ;}
-						 else{
-						 	html += '<span class="nop" style="float:right">';
-						 	test = false;
-						 	html += " Currently Down "+data[i][0];
-						 	html += '</span>';}
 						 
-						 html+="</div>";
-						 $("#resultDiv").append(html);
-						 if(flag==1){document.getElementById("s"+count).style.backgroundColor = "#1ABC9C" ;}
-						 else{document.getElementById("s"+count).style.backgroundColor = "#f75353";}
+						 if(data[i][0] != "OK"){
+						 	test=false;break;}
+					}
+
+					for(var i in data)
+					{
+							Handlebars.registerHelper('if_eq', function(a, b, opts) {
+							    if(a == b)
+							        return opts.fn(this);
+							    else
+							        return opts.inverse(this);
+							});
+							var template = $('#stathtml').text();
+							var fn = Handlebars.compile(template);
+							var html=fn({count:count , i:i , statcode:data[i][0]});
+							$('#stattable').append(html);
+							
+						 	
 						 count++;
 						 flag=0;
 					}
+
+					$("tr").click(function(e){
+								if(!$(e.target).find("div").hasClass('shown')){
+									$(e.target).find('.errormsg').fadeIn();
+									$(e.target).find('.errormsg').toggleClass('shown');}
+
+								else{
+										$(e.target).find('.errormsg').fadeOut();
+										$(e.target).find('.errormsg').toggleClass('shown');
+									}
+							});
 					html="";
 					if(test) Redirect();
 				} , "json");
 		</script>
 		<br><br><br>
+
 	</body>
 </html>
