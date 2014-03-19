@@ -21,7 +21,7 @@ body
 	padding : 10px;
 	color: black;
 	font-size: 22px;
-	font-family:  sans-serif;
+	font-family: "Ubuntu" , sans-serif;
 }
 
 .stat
@@ -46,6 +46,11 @@ body
 	float: right;
 }
 
+.item
+{
+
+}
+
 .errormsg
 {
 	width:97%;
@@ -56,8 +61,6 @@ body
 	font-family: "Segoe UI" , sans-serif;
 	font-size: 20px;
 	text-align: center;
-	border: 1px solid red;
-	border-radius: 5px;
 	display: none;
 }
 
