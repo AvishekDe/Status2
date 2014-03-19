@@ -36,9 +36,6 @@
 				var fn = Handlebars.compile(template);
 				var html=fn({data:data});
 				$('#stattable').html(html);
-				$("tr").click(function(e){
-					$(e.target).parent().find('.errormsg').toggle();
-				});
 			});
 		</script>
 	</body>
