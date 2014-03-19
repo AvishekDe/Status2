@@ -1,14 +1,7 @@
 body
 {
 	background-color: white;
-}
-
-#titlebar
-{
-	position: relative;
-	left: 1%;
-	width: 98%;
-	height: 127px;
+	font-family: "Segoe UI" , sans-serif;
 }
 
 #resultDiv
@@ -63,69 +56,37 @@ body
 	text-align: center;
 	display: none;
 }
-
-#header
+.showmore
 {
-	width:90%;
-	height:84px;
-	position: relative;
-	top:5px;
-	left:2.5%;
-	font-family: "Segoe UI" , sans-serif;
-	font-size: 30px;
-	vertical-align: top;
-	color: #1ABC9C;
-	font-weight: 500;
-}
-
-#mainarea
-{
-	width:90%;
-	position: relative;
-	top:5px;
-	left: 2.5%;
-	
+	text-align: center;
+	color: #1B36EB;
+	border: 2px solid #1B36EB;
+	border-radius: 12px;
+	padding:4px;
+	text-decoration: none;
+	margin-top: 10px;
+	display: none;
 }
 
 #fine
 {
-	width: 90%;
-	position: relative;
-	top: 240px;
-	left: 8.5%;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -50px;
+	margin-left: -100px;
 	text-align: center;
-	font-family: "Segoe UI" , sans-serif;
-	font-size: 32px;
-	color: black;
 }
 
-#showmore
+#titlebar
 {
-	width: 90%;
-	position: relative;
-	top: 255px;
-	left: 8.5%;
-	text-align: center;
-	font-family: "Segoe UI" , sans-serif;
-	font-size: 20px;
-	color: #1B36EB;
+  	margin-left: auto;
+  	margin-right: auto;
+  	width:400px;
+  	background-image:url('img/statuslogo.jpg');
+  	min-height:111px;
 }
-
-#bsm
-{
-	background-color: white;
-	border: 2px solid #1B36EB;
-	border-radius: 12px;
-	width: 137px;
-	height: 37px;
-	font-family: "Segoe UI" , sans-serif;
-	font-size: 15px;
-	color: #1B36EB;
-	display: none;
+#stattable{
+	width:492px;
 }
-
-#statuslogo
-{
-	position: relative;
-	left: 400px;
-}
+#fine
