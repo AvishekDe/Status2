@@ -4,19 +4,6 @@ body
 	font-family: "Segoe UI" , sans-serif;
 }
 
-#resultDiv
-{
-	position: relative;
-	left: 359px;
-	width: 492px;
-	min-height:100px;
-	top: 5px;
-	padding : 10px;
-	color: black;
-	font-size: 22px;
-	font-family: "Ubuntu" , sans-serif;
-}
-
 .stat
 {
 	width: 90%;
@@ -27,21 +14,6 @@ body
 	top:14px;
 	border-radius: 4px;
 	margin: 3px;
-}
-
-.op
-{
-	
-}
-
-.nop
-{
-	float: right;
-}
-
-.item
-{
-
 }
 
 .errormsg
@@ -87,6 +59,8 @@ body
   	min-height:111px;
 }
 #stattable{
-	width:492px;
+	width:500px;
+	margin:0 auto;
+	font-family: "Ubuntu", "sans-serif";
 }
 #fine
