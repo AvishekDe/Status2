@@ -30,7 +30,7 @@ function requester(url, name, cb){
                 name:name,
                 err:err
             });
-        else
+        else{
             var status={
                 name: name,
                 code: res.statusCode
@@ -40,6 +40,7 @@ function requester(url, name, cb){
                 key='err';
             status[key] = statusCodes[res.statusCode];
             output.push(status);
+        }
         cb();
     });
 }
