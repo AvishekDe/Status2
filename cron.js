@@ -55,8 +55,18 @@ function requestConnect(host, port, name, cb){
         else
             output.push({
                 name: name,
-                code: 0
+                code: 0,
+                msg: "OK"
             })
+        cb();
+        client.end();
+    });
+    client.on('error', function(err){
+        output.push({
+            name:name,
+            err: err.syscall+' '+err.errno,
+            code: err.code
+        });
         cb();
         client.end();
     });
