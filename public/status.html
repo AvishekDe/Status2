@@ -4,6 +4,7 @@
 		<meta name="Author" content="Team SDSLabs">
 		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="styles.css">
+		<link rel="stylesheet" href="hint.css">
 		<script src="jquery-1.11.0.min.js"></script>
 		<script src="handlebars-1.3.0.min.js"></script>
 	</head>
@@ -14,11 +15,11 @@
 					<td>{{this.name}}</td>
 				{{#if this.err}}
 					<td>
-				 		<img src="img/cross.jpg" title="{{this.err}}">
+				 		<a class="hint--right" data-hint="{{this.err}}"><img src="img/cross.jpg"></a>
 				 	</td>
 				{{else}}
 					<td>
-						<img src="img/tick.jpg" title="{{this.msg}}">
+						<a class="hint--right" data-hint="{{this.msg}}"><img src="img/tick.jpg"></a>
 					</td>
 				{{/if}}
 				</tr>
