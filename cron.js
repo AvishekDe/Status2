@@ -15,7 +15,7 @@ for(var i in ini)
 {
     var config = ini[i];
     if(config.url){
-        requester(config.url, config.name, cb);
+        requester(config.url, config.name, config.mention, cb);
     }
     else{
         //try connecting to the host,port and call cb once its done
@@ -23,7 +23,7 @@ for(var i in ini)
     }
 }
 
-function requester(url, name, cb){
+function requester(url, name, mention, cb){
     request(url, function(err, res, body){
         if(err)
             output.push({
@@ -33,11 +33,70 @@ function requester(url, name, cb){
         else{
             var status={
                 name: name,
-                code: res.statusCode
+                code: res.statusCode,
             }
             key='msg';
-            if(res.statusCode!=200)
+            if(res.statusCode!=200){
                 key='err';
+
+                /*request.post({
+                    url: 'https://sdslabs.slack.com/services/hooks/incoming-webhook?token=oIhlY5LU0CpCXQn5zWucUsIr',
+                    json: {
+                        "text" : name+" is down. It needs your attention. <"+url+">. Please see to it <"+mention+">",
+                    },
+                },
+
+                function (error,response,body) {
+                }       
+            );*/
+                fs.readFile('public/output.json' , 'utf-8' , function (err,data) {
+                if(err) throw err;
+                else
+                {
+                    var len = data.length;
+                    var str = "";
+                    for( var i=1; i< (len-1) ; i++)
+                        str = str.concat(data[i]);
+                    var array = JSON.parse("[" + str + "]");
+                    
+                    for(var i=0 ; i< (array.length) ; i++){
+                        if(array[i]["name"] == name){
+                            var lasttime = array[i]["time"]; //obtaining a JSONdate
+                            var then = new Date(lasttime);
+                            var now = new Date();
+                            var flag = 0;
+                            var jsondate = now.toJSON();
+                            if(now.getFullYear()==then.getFullYear()){
+                                if(now.getMonth() == then.getMonth()){
+                                    if(now.getDate() == then.getDate()){
+                                        if(now.getHours() == then.getHours()){
+                                            var mindif = now.getMinutes() - then.getMinutes();
+                                            if(mindif <= 30 || mindif >= -30){
+                                                flag=1;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if(flag == 0){
+                                request.post({
+                                        url: 'https://sdslabs.slack.com/services/hooks/incoming-webhook?token=oIhlY5LU0CpCXQn5zWucUsIr',
+                                        json: {
+                                            "text" : name+" is down. It needs your attention. <"+url+">. Please see to it <"+mention+">",
+                                        },
+                                    },
+
+                                    function (error,response,body) {
+                                    }       
+                                );
+                                status['time'] = jsondate;
+                            }
+                        }
+
+                    }
+                }
+            });
+            }
             status[key] = statusCodes[res.statusCode];
             output.push(status);
         }
