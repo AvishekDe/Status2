@@ -98,10 +98,12 @@ function notifySlack(name, mention, url){
         text = "<"+url+"|"+name+">";
     else
         text = name;
+    //Linkify all the mentions
+    mention = mention.replace(/@\w+/g,'<$&>');
     request.post({
         url: 'https://sdslabs.slack.com/services/hooks/incoming-webhook?token=oIhlY5LU0CpCXQn5zWucUsIr',
         json: {
-            text : text+" is down. <" + mention + ">"
+            text : text+" is down. " + mention
         }
     });
     timeStamps[name] = currentTime;
