@@ -38,17 +38,6 @@ function requester(url, name, mention, cb){
             key='msg';
             if(res.statusCode!=200){
                 key='err';
-
-                /*request.post({
-                    url: 'https://sdslabs.slack.com/services/hooks/incoming-webhook?token=oIhlY5LU0CpCXQn5zWucUsIr',
-                    json: {
-                        "text" : name+" is down. It needs your attention. <"+url+">. Please see to it <"+mention+">",
-                    },
-                },
-
-                function (error,response,body) {
-                }       
-            );*/
                 fs.readFile('public/output.json' , 'utf-8' , function (err,data) {
                 if(err) throw err;
                 else
@@ -69,11 +58,9 @@ function requester(url, name, mention, cb){
                             if(now.getFullYear()==then.getFullYear()){
                                 if(now.getMonth() == then.getMonth()){
                                     if(now.getDate() == then.getDate()){
-                                        if(now.getHours() == then.getHours()){
-                                            var mindif = now.getMinutes() - then.getMinutes();
-                                            if(mindif <= 30 || mindif >= -30){
-                                                flag=1;
-                                            }
+                                        var mindif = (now.getHours()*60)+now.getMinutes() - ((then.getHours()*60)+then.getMinutes());
+                                        if(mindif <= 30){
+                                            flag = 1;
                                         }
                                     }
                                 }
