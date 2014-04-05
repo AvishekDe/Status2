@@ -1,15 +1,21 @@
-var net = require('net');
-var fs = require('fs'),
+var net = require('net'),
+    fs = require('fs'),
     ini = require('./parser'),
     request = require("request"),
     statusCodes = require("./status.json"),
     _ = require('lodash');
 
-var output=[];
+var output=[], 
+    timeStamps = fs.readFileSync('time.json',{encoding:'utf8'}),
+    currentTime = Math.floor(Date.now()/1000),
+    timeStamps = (timeStamps==='') ? {} : JSON.parse(timeStamps);
+
+//We open the time.json file for reading+writing, and create it if it doesn't exist. If the file is blank, use a blank object ({})
 var count = Object.keys(ini).length;//Number of sections in our INI file
 //This will make our anonymous function call after cb has been called count times
 var cb = _.after(count, function(){
     fs.writeFile('public/output.json', JSON.stringify(output));
+    fs.writeFile('time.json', JSON.stringify(timeStamps));
 });
 for(var i in ini)
 {
@@ -34,55 +40,14 @@ function requester(url, name, mention, cb){
             var status={
                 name: name,
                 code: res.statusCode,
-            }
+            };
             key='msg';
-            if(res.statusCode!=200){
+            //If our request was not successful            
+            if(res.statusCode!==200){
                 key='err';
-                fs.readFile('public/output.json' , 'utf-8' , function (err,data) {
-                if(err) throw err;
-                else
-                {
-                    var len = data.length;
-                    var str = "";
-                    for( var i=1; i< (len-1) ; i++)
-                        str = str.concat(data[i]);
-                    var array = JSON.parse("[" + str + "]");
-                    
-                    for(var i=0 ; i< (array.length) ; i++){
-                        if(array[i]["name"] == name){
-                            var lasttime = array[i]["time"]; //obtaining a JSONdate
-                            var then = new Date(lasttime);
-                            var now = new Date();
-                            var flag = 0;
-                            var jsondate = now.toJSON();
-                            if(now.getFullYear()==then.getFullYear()){
-                                if(now.getMonth() == then.getMonth()){
-                                    if(now.getDate() == then.getDate()){
-                                        var mindif = (now.getHours()*60)+now.getMinutes() - ((then.getHours()*60)+then.getMinutes());
-                                        if(mindif <= 30){
-                                            flag = 1;
-                                        }
-                                    }
-                                }
-                            }
-                            if(flag == 0){
-                                request.post({
-                                        url: 'https://sdslabs.slack.com/services/hooks/incoming-webhook?token=oIhlY5LU0CpCXQn5zWucUsIr',
-                                        json: {
-                                            "text" : name+" is down. It needs your attention. <"+url+">. Please see to it <"+mention+">",
-                                        },
-                                    },
-
-                                    function (error,response,body) {
-                                    }       
-                                );
-                                status['time'] = jsondate;
-                            }
-                        }
-
-                    }
-                }
-            });
+                var lastNotificationTime = timeStamps[name];
+                if(currentTime-lastNotificationTime > 30*60 || lastNotificationTime === undefined)
+                    notifySlack(name, mention, url);
             }
             status[key] = statusCodes[res.statusCode];
             output.push(status);
@@ -97,13 +62,13 @@ function requestConnect(host, port, name, cb){
             output.push({
                 name: name,
                 err: err
-            })
+            });
         else
             output.push({
                 name: name,
                 code: 0,
                 msg: "OK"
-            })
+            });
         cb();
         client.end();
     });
@@ -116,4 +81,18 @@ function requestConnect(host, port, name, cb){
         cb();
         client.end();
     });
+}
+
+function notifySlack(name, mention, url){
+    if(url)
+        text = "<"+url+"|"+name+">";
+    else
+        text = name;
+    request.post({
+        url: 'https://sdslabs.slack.com/services/hooks/incoming-webhook?token=oIhlY5LU0CpCXQn5zWucUsIr',
+        json: {
+            text : text+" is down. <" + mention + ">"
+        }
+    });
+    timeStamps[name] = currentTime;
 }
