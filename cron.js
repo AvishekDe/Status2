@@ -30,29 +30,39 @@ for(var i in ini)
 }
 
 function requester(url, name, mention, cb){
-    request(url, function(err, res, body){
-        if(err)
-            output.push({
-                name:name,
-                err:err
-            });
-        else{
-            var status={
-                name: name,
-                code: res.statusCode,
-            };
-            key='msg';
-            //If our request was not successful            
-            if(res.statusCode!==200){
-                key='err';
+    request({
+        url:url,
+        timeout:5000
+        }, function(err, res, body){
+            console.log(name);
+            var errFlag = false;
+            if(err){
+                output.push({
+                    name:name,
+                    err:err.code
+                });
+                errFlag = true;
+            }
+            else{
+                var status={
+                    name: name,
+                    code: res.statusCode,
+                };
+                key='msg';
+                //If our request was not successful            
+                if(res.statusCode!==200){
+                    key='err';
+                    errFlag=true;
+                }
+                status[key] = statusCodes[res.statusCode];
+                output.push(status);
+            }
+            if(errFlag){
                 var lastNotificationTime = timeStamps[name];
                 if(currentTime-lastNotificationTime > 30*60 || lastNotificationTime === undefined)
                     notifySlack(name, mention, url);
             }
-            status[key] = statusCodes[res.statusCode];
-            output.push(status);
-        }
-        cb();
+            cb();
     });
 }
 
