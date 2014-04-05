@@ -18,8 +18,8 @@ body
 .showmore
 {
 	text-align: center;
-	color: #1B36EB;
-	border: 2px solid #1B36EB;
+	color: #3498db;
+	border: 2px solid #3498db;
 	border-radius: 12px;
 	padding:4px;
 	text-decoration: none;
@@ -29,11 +29,10 @@ body
 
 #fine
 {
+	color: #27ae60;
 	position: fixed;
-	top: 50%;
-	left: 50%;
-	margin-top: -50px;
-	margin-left: -100px;
+	top: 35%;
+	left: calc(50% - 77.5px);
 	text-align: center;
 }
 
