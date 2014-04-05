@@ -25,7 +25,7 @@ for(var i in ini)
     }
     else{
         //try connecting to the host,port and call cb once its done
-        requestConnect(config.host, config.port, config.name, cb);
+        requestConnect(config.host, config.port, config.name, config.mention, cb);
     }
 }
 
@@ -66,13 +66,18 @@ function requester(url, name, mention, cb){
     });
 }
 
-function requestConnect(host, port, name, cb){
+function requestConnect(host, port, name, mention, cb){
+    var lastNotificationTime = timeStamps[name];
     var client = net.connect({port: port, host:host}, function(err){
-        if(err)
+        console.log(name);
+        if(err){
             output.push({
                 name: name,
                 err: err
-            });
+            });            
+            if(currentTime-lastNotificationTime > 30*60 || lastNotificationTime === undefined)
+                notifySlack(name, mention);
+        }
         else
             output.push({
                 name: name,
@@ -83,11 +88,14 @@ function requestConnect(host, port, name, cb){
         client.end();
     });
     client.on('error', function(err){
+        console.log(name);
         output.push({
             name:name,
             err: err.syscall+' '+err.errno,
             code: err.code
         });
+        if(currentTime-lastNotificationTime > 30*60 || lastNotificationTime === undefined)
+            notifySlack(name, mention);
         cb();
         client.end();
     });
